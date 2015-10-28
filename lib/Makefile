@@ -13,7 +13,7 @@
 CC=gcc
 DEBUG_FLAGS=
 INCLUDE_FLAGS=-I../include
-OPTIMIZE_FLAGS=-O6
+OPTIMIZE_FLAGS=-O3 -fPIC
 WARNING_FLAGS=-Wall
 CFLAGS:=$(DEBUG_FLAGS) $(INCLUDE_FLAGS) $(OPTIMIZE_FLAGS) $(WARNING_FLAGS)
 
@@ -21,6 +21,7 @@ all:	librtd-aDIO.a
 
 librtd-aDIO.a:	librtd-aDIO.o
 	ar -cru librtd-aDIO.a librtd-aDIO.o
+	ranlib librtd-aDIO.a
 
 librtd-aDIO.o:	librtd-aDIO.c
 	$(CC) $(CFLAGS) -c librtd-aDIO.c
