@@ -1,0 +1,16 @@
+This is basically the vendor import of the RTD digital I/O control module, plus a small cython binding.
+
+From RTD:
+     aDIO_Linux_v03.01.00.tar.gz
+
+This provides a kernel module in driver/, a library in lib/, and some examples/
+
+We check in the built kernel and library to git, because the BEE image
+cannot build modules, but the module cannot be built on other machines
+without editing something in driver to force the selection of
+__INTEL_MONTEVINA_CHIPSET.
+
+From us:
+     python/rtdADIO/
+
+     
