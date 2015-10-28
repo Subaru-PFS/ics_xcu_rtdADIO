@@ -1,0 +1,3 @@
+setupOptional(python)
+
+pathAppend(PYTHONPATH, ${PRODUCT_DIR}/python)
