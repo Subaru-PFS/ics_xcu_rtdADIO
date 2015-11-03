@@ -44,6 +44,10 @@ cdef class ADIO:
 
         self.connect()
 
+    def __dealloc__(self):
+        if self.deviceHandle != <DeviceHandle> 0:
+            CloseDIO_aDIO(self.deviceHandle)
+        
     def connect(self):
         ret = OpenDIO_aDIO(&self.deviceHandle, self.minor)
         if ret != 0:
@@ -62,6 +66,13 @@ cdef class ADIO:
         if ret != 0:
             raise RuntimeError("failed to configure ADIO port 0. errno=%d" % ret)
 
+    def disconnect(self):
+        if self.deviceHandle != <DeviceHandle> 0:
+            ret = CloseDIO_aDIO(self.deviceHandle)
+            if ret != 0:
+                raise RuntimeError("failed to close ADIO port 0. errno=%d" % ret)
+            self.deviceHandle = <DeviceHandle> 0
+            
     def status(self):
         cdef unsigned char val
         ret = ReadPort_aDIO(self.deviceHandle,
