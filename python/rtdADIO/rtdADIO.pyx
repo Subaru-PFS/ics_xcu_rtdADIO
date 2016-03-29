@@ -1,3 +1,4 @@
+import logging
 import sys
 import cython
 
@@ -35,13 +36,19 @@ cdef class ADIO:
     cdef int minor
     cdef int portNum
     cdef unsigned char port0mask
+    cdef object _logger
     
-    def __init__(self, mask):
+    def __init__(self, mask, logger=None, logLevel=logging.DEBUG):
         self.minor = 0          # Seems to be defined by the kernel module.
         self.portNum = 0
         self.port0mask = mask
         self.deviceHandle = <DeviceHandle> 0
-
+        if logger:
+            self._logger = logger
+        else:
+            self._logger = logging.getLogger('adio')
+        self._logger.setLevel(logLevel)
+        
         self.connect()
 
     def __dealloc__(self):
@@ -86,8 +93,10 @@ cdef class ADIO:
         return val
 
 
-    def _set(self, unsigned newVal):
+    def _set(self, unsigned char newVal):
         cdef unsigned char val
+        self._logger.debug('setting port %d to 0x%02x',
+                           self.portNum, newVal)
         ret = WritePort_aDIO(self.deviceHandle,
                              self.portNum,
                              newVal)
