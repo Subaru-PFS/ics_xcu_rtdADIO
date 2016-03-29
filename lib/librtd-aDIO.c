@@ -21,6 +21,7 @@
 
 #define RETERR  if (ret<0){ return(ret);}
 
+#include <stdio.h>
 #include <stdlib.h>		//for exit
 
 #include <aDIO_library.h>
@@ -43,7 +44,11 @@ Non-exported library functions
 
 		 wb.Port = port_offset;
 		 ret = ioctl(hDevice, ADIO_IOCTL_INB, &wb);
-		if (ret == 0) {
+#ifdef PRINTIO
+                 fprintf(stderr, "in(0x%08x) ret=%d data=0x%08x\n",
+                         wb.Port, ret, wb.Data);
+#endif
+                 if (ret == 0) {
 			*data_p = wb.Data;
 		}
 		return ret;
@@ -51,11 +56,17 @@ Non-exported library functions
 
 	int
 	 OutPort(int hDevice, unsigned char port_offset, unsigned char data) {
-		struct DEVICE_IO_Data wb;
+          int ret;
+          struct DEVICE_IO_Data wb;
 
 		wb.Port = port_offset;
 		wb.Data = data;
-		return ioctl(hDevice, ADIO_IOCTL_OUTB, &wb);
+		ret = ioctl(hDevice, ADIO_IOCTL_OUTB, &wb);
+#ifdef PRINTIO
+                fprintf(stderr, "out(0x%08x) ret=%d data=0x%08x\n",
+                         wb.Port, ret, wb.Data);
+#endif
+                return ret;
 	}
 
 	int
