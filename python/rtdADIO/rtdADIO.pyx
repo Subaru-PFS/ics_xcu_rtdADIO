@@ -53,16 +53,18 @@ cdef class ADIO:
         if ret != 0:
             raise RuntimeError("failed to open ADIO device. errno=%d" % ret)
 
-        # Set output bits. 
+        
+        # Set output bits.
+        self._logger.debug('setting port0 bit mask to 0x%02x', self.port0mask)
         ret = LoadPort0BitDir_aDIO(self.deviceHandle,
-                                   self.port0mask & 0x80,
-                                   self.port0mask & 0x40,
-                                   self.port0mask & 0x20,
-                                   self.port0mask & 0x10,
-                                   self.port0mask & 0x08,
-                                   self.port0mask & 0x04,
-                                   self.port0mask & 0x02,
-                                   self.port0mask & 0x01)
+                                   bool(self.port0mask & 0x80),
+                                   bool(self.port0mask & 0x40),
+                                   bool(self.port0mask & 0x20),
+                                   bool(self.port0mask & 0x10),
+                                   bool(self.port0mask & 0x08),
+                                   bool(self.port0mask & 0x04),
+                                   bool(self.port0mask & 0x02),
+                                   bool(self.port0mask & 0x01))
         if ret != 0:
             raise RuntimeError("failed to configure ADIO port 0. errno=%d" % ret)
 
