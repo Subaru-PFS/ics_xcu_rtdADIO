@@ -22,6 +22,17 @@ cdef extern from "aDIO_library.h":
         unsigned char Bit1,
         unsigned char Bit0
     )
+    int LoadMask_aDIO(
+        DeviceHandle Device,
+        unsigned char Bit7,
+        unsigned char Bit6,
+        unsigned char Bit5,
+        unsigned char Bit4,
+        unsigned char Bit3,
+        unsigned char Bit2,
+        unsigned char Bit1,
+        unsigned char Bit0
+    )
     int ReadPort_aDIO(DeviceHandle Device,
                       int PortNum,
                       unsigned char *val)
